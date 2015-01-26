@@ -44,19 +44,61 @@ def trigramGenerator(listOfNames):
     return (sorted(trigram for trigram, score in scored)[1:10] )
 
 
-def altTrigramGenerator(listOfNames):
+def altBigramGenerator(listOfNames):
+    bigram = []
+    outputList = []
+    namesLength = 0
+    for name in listOfNames:
+        bigram += list(bigrams(list(name.lower())))
+        namesLength += 1
+
+    bigramFreqDist = nltk.FreqDist(bigram)
+    mostCommon = bigramFreqDist.most_common(50)
+    print("No of names in this category : ",namesLength)
+    for eachGram in mostCommon:
+        tempGram = eachGram[0][0]+eachGram[0][1]
+        outputList.append(tempGram)
+        print(tempGram,"  Percentage Occurance : ",(int(eachGram[1])/namesLength))
+    return (outputList)
+
+
+def altTrigramGenerator(listOfNames,threshold):
     trigram = []
+    namesLength = 0
+    outputList = []
     for name in listOfNames:
         trigram += list(trigrams(list(name.lower())))
+        namesLength += 1
 
     trigramFreqDist = nltk.FreqDist(trigram)
-    mostCommon = trigramFreqDist.most_common(10)
+    mostCommon = trigramFreqDist.most_common(50)
+    print("No of names in this category : ",namesLength)
     for eachGram in mostCommon:
         tempGram = eachGram[0][0]+eachGram[0][1]+eachGram[0][2]
-        print(tempGram,"  ",eachGram[1])
-    
+        percentageOccurance = int(eachGram[1])/namesLength
+        if threshold < percentageOccurance:
+            outputList.append(tempGram)
+        print(tempGram,"  Percentage Occurance : ",percentageOccurance)
+    return (outputList)
 
+def trigramList(maleNames,femaleNames,threshold):
+    print('Male Trigrams')
+    maleTrigrams = altTrigramGenerator(maleNames,threshold)
+    print('Female Trigrams')
+    femaleTrigrams = altTrigramGenerator(femaleNames,threshold)
+
+    print('Male Trigrams Passing Threshold')
+    print(maleTrigrams)
+    print('Female Trigrams Passing Threshold')
+    print(femaleTrigrams)
     
+    allTrigrams = list(set(maleTrigrams) - (set(maleTrigrams) & set(femaleTrigrams))) + list(set(femaleTrigrams) - (set(maleTrigrams) & set(femaleTrigrams)))
+    print(allTrigrams)
+    return(allTrigrams)
+    
+    
+    
+'''
 print('----------------------------------')
 print('Male')
 altTrigramGenerator(maleNames)
@@ -64,4 +106,4 @@ print('----------------------------------')
 print('----------------------------------')
 print('Female')
 altTrigramGenerator(femaleNames)
-    
+'''    

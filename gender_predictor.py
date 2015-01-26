@@ -47,7 +47,7 @@ def gender_features2(name):
         features["lastletterConsonant"] = 1 
 
 
-
+    '''Trigrams ['ric', 'art', 'har', 'ton', 'ard', 'ber', 'ina', 'ine', 'lin', 'nne', 'ett', 'nna', 'ari', 'ann', 'lla', 'eli', 'ris', 'lyn', 'rie', 'lle'] '''    
     features["countVowels"] = name.lower().count('a') + name.lower().count('e') + name.lower().count('i') + name.lower().count('o') + name.lower().count('u')
     features["nameLength"] = len(name)
     features["countConsonants"] = features["nameLength"] - features["countVowels"]
